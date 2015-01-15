@@ -12,6 +12,7 @@ var CommentBox = React.createClass({
   loadCommentFromServer: function() {
     $.ajax({
       url: this.props.url,
+      port: 3000,
       dataType: 'json',
       cache: false, // This parameter is mandatory, otherwise, the data will not be refreshed by the poll every 2 sec.
       success: function(data) {
@@ -26,6 +27,7 @@ var CommentBox = React.createClass({
     // submit to the server and refresh the list
     $.ajax({
       url: this.props.url,
+      port: 3000,
       dataType: 'json',
       type: 'POST',
       data: comment,

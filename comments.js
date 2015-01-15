@@ -13,7 +13,7 @@ var CommentBox = React.createClass({
     $.ajax({
       url: this.props.url,
       dataType: 'json',
-      cache: false,
+      cache: false, // This parameter is mandatory, otherwise, the data will not be refreshed by the poll every 2 sec.
       success: function(data) {
         this.setState({data: data});
       }.bind(this),

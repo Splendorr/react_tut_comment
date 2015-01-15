@@ -1,0 +1,4 @@
+# PHPStorm : exclude .idea directory
+    .idea/
+    .idea/*
+    **/.idea/*

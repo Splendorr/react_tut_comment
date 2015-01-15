@@ -1,5 +1,6 @@
 # PHPStorm : exclude .idea directory
 .*
 !/.gitignore
+!/.gitattributes
 .idea/
 .idea/*

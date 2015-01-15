@@ -4,3 +4,4 @@
 !/.gitattributes
 .idea/
 .idea/*
+node_modules/

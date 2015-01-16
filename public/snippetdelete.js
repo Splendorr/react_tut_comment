@@ -1,43 +1,6 @@
 /**
  * Created by nmauger on 16/01/2015.
  */
-var Comment = React.createClass({
-  handleClick: function(e){
-    e.preventDefault();
-    var commentId = this.props.comment.id;
-    return this.props.onDelete(commentId);
-  },
-  render: function () {
-    return (
-      <div className="comment">
-        <h4 className="commentAuthor">
-          {this.props.comment.email}
-        </h4>
-          {this.props.comment.comment}
-        <a onClick={this.handleClick}> &times; </a>
-      </div>
-    );
-  }
-});
-
-var CommentList = React.createClass({
-  handleDelete: function(commentId){
-    return this.props.del(commentId);
-  },
-  render: function () {
-    var commentNodes = this.props.comments.map(function (comment, index) {
-      return (
-        <Comment comment = {comment} onDelete = {this.handleDelete} key = {index} />
-      );
-    });
-
-    return (
-      <div className="commentList">
-        {commentNodes}
-      </div>
-    );
-  }
-});
 
 var CommentBox = React.createClass({
   getInitialState: function () {
@@ -100,6 +63,25 @@ var CommentBox = React.createClass({
   }
 });
 
+var CommentList = React.createClass({
+  handleDelete: function(commentId){
+    return this.props.del(commentId);
+  },
+  render: function () {
+    var commentNodes = this.props.comments.map(function (comment, index) {
+      return (
+        <Comment comment = {comment} onDelete = {this.handleDelete} key = {index} />
+      );
+    });
+
+    return (
+      <div className="commentList">
+        {commentNodes}
+      </div>
+    );
+  }
+});
+
 var CommentForm = React.createClass({
   handleSubmit: function() {
     var email = this.refs.email.getDOMNode().value.trim();
@@ -120,6 +102,27 @@ var CommentForm = React.createClass({
     );
   }
 });
+
+
+var Comment = React.createClass({
+  handleClick: function(e){
+    e.preventDefault();
+    var commentId = this.props.comment.id;
+    return this.props.onDelete(commentId);
+  },
+  render: function () {
+    return (
+      <div className="comment">
+        <h4 className="commentAuthor">
+          {this.props.comment.email}
+        </h4>
+          {this.props.comment.comment}
+        <a onClick={this.handleClick}> &times; </a>
+      </div>
+    );
+  }
+});
+
 
 var ready = function () {
   React.renderComponent(

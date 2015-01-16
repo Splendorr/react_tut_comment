@@ -42,6 +42,21 @@ var CommentBox = React.createClass({
       }.bind(this)
     });
   },
+  deleteComment: function(commentId){
+    $.ajax({
+      url: this.props.url,
+      port: 3000,
+      data: {"id" : commentId},
+      dataType: 'json',
+      type: 'DELETE',
+      success: function (comments) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   componentDidMount: function() {
     this.loadCommentFromServer();
     setInterval(this.loadCommentFromServer, this.props.pollInterval);
@@ -50,7 +65,7 @@ var CommentBox = React.createClass({
     return (
       <div className="commentBox">
         <h1>Comments</h1>
-        <CommentList data={this.state.data} />
+        <CommentList deleteC = {this.deleteComment} data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
@@ -58,14 +73,15 @@ var CommentBox = React.createClass({
 });
 
 var CommentList = React.createClass({
+  handleDelete: function(commentId){
+    return this.props.deleteC(commentId);
+  },
   render: function() {
-    var commentNodes = this.props.data.map(function (comment) {
+    var commentNodes = this.props.data.map(function (comment, index) {
       return (
-        <Comment author={comment.author}>
-          {comment.text}
-        </Comment>
+        <Comment comment = {comment} onDelete = {this.handleDelete} key = {index} />
       );
-    });
+    }.bind(this));
     return (
       <div className="commentList">
         {commentNodes}
@@ -100,7 +116,7 @@ var CommentForm = React.createClass({
   }
 });
 
-var converter = new Showdown.converter();
+//var converter = new Showdown.converter();
 var Comment = React.createClass({
   handleClick: function(e){
     e.preventDefault();
@@ -108,13 +124,13 @@ var Comment = React.createClass({
     return this.props.onDelete(commentId);
   },
   render: function() {
-    var rawMarkup = converter.makeHtml(this.props.children.toString());
+    //var rawMarkup = converter.makeHtml(this.props.children.toString());
     return (
       <div className="comment">
         <h2 className="commentAuthor">
-          {this.props.author}
+          {this.props.comment.author}
         </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+        {this.props.comment.text}
         <a onClick={this.handleClick}> &times; </a>
       </div>
     );

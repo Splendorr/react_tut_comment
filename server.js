@@ -36,6 +36,12 @@ app.post('/comments.json', function(req, res) {
   res.send(JSON.stringify(comments));
 });
 
+app.delete('/comments.json', function(req, res) {
+  comments.splice(req.id, 1);
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(comments));
+});
+
 app.listen(3000);
 
 console.log('Server started: http://localhost:3000/');

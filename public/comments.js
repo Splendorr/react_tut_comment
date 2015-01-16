@@ -1,6 +1,8 @@
 /**
  * Created by nmauger on 15/01/2015.
  */
+
+// TODO: have a local version of libraries needed.
 var data = [
   {author: "NO DATA", text: "Please fill the comments.json"}
 ];
@@ -25,8 +27,11 @@ var CommentBox = React.createClass({
   },
   handleCommentSubmit: function(comment) {
     var comments = this.state.data;
+
+    // These 2 lines just to refresh faster: i.e without waiting for server response.
     var newComments = comments.concat([comment]);
     this.setState({data: newComments});
+
     // submit to the server and refresh the list
     $.ajax({
       url: this.props.url,
@@ -77,6 +82,7 @@ var CommentList = React.createClass({
     return this.props.deleteC(commentId);
   },
   render: function() {
+    // TODO: Problem id = {index} or key = {index} as stated originally ?
     var commentNodes = this.props.data.map(function (comment, index) {
       return (
         <Comment comment = {comment} onDelete = {this.handleDelete} key = {index} />
@@ -120,7 +126,7 @@ var CommentForm = React.createClass({
 var Comment = React.createClass({
   handleClick: function(e){
     e.preventDefault();
-    var commentId = this.props.comment.id;
+    var commentId = this.props.comment.id; // TODO: Why not this.props.key according to commentList (within map function)
     return this.props.onDelete(commentId);
   },
   render: function() {

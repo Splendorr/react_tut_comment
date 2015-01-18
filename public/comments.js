@@ -91,7 +91,7 @@ var CommentList = React.createClass({
   render: function() {
     var commentNodes = this.props.data.map(function (comment, index) {
       return (
-        <Comment comment = {comment} onDelete = {this.handleDelete} index = {index} />
+        <Comment comment = {comment} onDelete = {this.handleDelete} index = {index} key = {index} />
       );
     }.bind(this));
     return (
@@ -139,11 +139,12 @@ var Comment = React.createClass({
     var rawMarkup = converter.makeHtml(this.props.comment.text.toString());
     return (
       <div className="comment">
-        <h2 className="commentAuthor">
+        <a onClick={this.handleClick}>[x]</a>
+        <h3 className="commentAuthor">
           {this.props.comment.author}
-        </h2>
+        </h3>
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-        <a onClick={this.handleClick}> &times; </a>
+
       </div>
     );
   }

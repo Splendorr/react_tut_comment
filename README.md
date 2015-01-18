@@ -1,5 +1,6 @@
-# react_tut_comment
-react Tutorial : Comments
+__ React Tutorial__
+
+Comments tutorial.
 
 Added Delete capability.
 

@@ -1,4 +1,4 @@
-__ React Tutorial__
+__React Tutorial__
 
 Comments tutorial.
 

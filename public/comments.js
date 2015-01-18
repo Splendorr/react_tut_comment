@@ -128,7 +128,7 @@ var CommentForm = React.createClass({
   }
 });
 
-//var converter = new Showdown.converter();
+var converter = new Showdown.converter();
 var Comment = React.createClass({
   handleClick: function(e){
     e.preventDefault();
@@ -136,13 +136,13 @@ var Comment = React.createClass({
     return this.props.onDelete(commentIndex);
   },
   render: function() {
-    //var rawMarkup = converter.makeHtml(this.props.children.toString());
+    var rawMarkup = converter.makeHtml(this.props.comment.text.toString());
     return (
       <div className="comment">
         <h2 className="commentAuthor">
           {this.props.comment.author}
         </h2>
-        {this.props.comment.text}
+        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
         <a onClick={this.handleClick}> &times; </a>
       </div>
     );

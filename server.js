@@ -30,14 +30,25 @@ app.get('/comments.json', function(req, res) {
   res.send(JSON.stringify(comments));
 });
 
+/** Post and Delete methods :
+ * These are simple memory operation.
+ * Data are not flushed to the disk: When restarted, the server will display the unmodified comments.json content.
+ */
+
+/**
+ * Adds a comment in the array.
+ */
 app.post('/comments.json', function(req, res) {
   comments.push(req.body);
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(comments));
 });
 
+/**
+ * Removes a comment from the array at the id position.
+ */
 app.delete('/comments.json', function(req, res) {
-  comments.splice(req.id, 1);
+  comments.splice(req.body.index, 1);
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(comments));
 });

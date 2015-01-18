@@ -2,7 +2,8 @@
  * Created by nmauger on 15/01/2015.
  */
 
-// TODO: have a local version of libraries needed.
+// TODO: have a local version of libraries needed
+// TODO: Serialize data to the disk (Node Server)
 var data = [
   {author: "NO DATA", text: "Please fill the comments.json"}
 ];
@@ -36,26 +37,32 @@ var CommentBox = React.createClass({
     $.ajax({
       url: this.props.url,
       port: 3000,
-      dataType: 'json',
       type: 'POST',
+      dataType: 'json',
       data: comment,
-      success: function(data) {
-        this.setState({data: data});
+      success: function(comments) {
+        this.setState({data: comments});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
-  deleteComment: function(commentId){
+  deleteComment: function(commentIndex){
+    var comments = this.state.data;
+
+    // These 2 lines just to refresh faster: i.e without waiting for server response.
+    var newComments = comments.splice(commentIndex, 1);
+    this.setState({data: newComments});
+
     $.ajax({
       url: this.props.url,
       port: 3000,
-      data: {"id" : commentId},
-      dataType: 'json',
       type: 'DELETE',
+      dataType: 'json',
+      data: {"index" : commentIndex},
       success: function (comments) {
-        this.setState({data: data});
+        this.setState({data: comments});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -70,7 +77,7 @@ var CommentBox = React.createClass({
     return (
       <div className="commentBox">
         <h1>Comments</h1>
-        <CommentList deleteC = {this.deleteComment} data={this.state.data} />
+        <CommentList deleteElement = {this.deleteComment} data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
@@ -78,14 +85,13 @@ var CommentBox = React.createClass({
 });
 
 var CommentList = React.createClass({
-  handleDelete: function(commentId){
-    return this.props.deleteC(commentId);
+  handleDelete: function(commentIndex){
+    return this.props.deleteElement(commentIndex);
   },
   render: function() {
-    // TODO: Problem id = {index} or key = {index} as stated originally ?
     var commentNodes = this.props.data.map(function (comment, index) {
       return (
-        <Comment comment = {comment} onDelete = {this.handleDelete} key = {index} />
+        <Comment comment = {comment} onDelete = {this.handleDelete} index = {index} />
       );
     }.bind(this));
     return (
@@ -126,8 +132,8 @@ var CommentForm = React.createClass({
 var Comment = React.createClass({
   handleClick: function(e){
     e.preventDefault();
-    var commentId = this.props.comment.id; // TODO: Why not this.props.key according to commentList (within map function)
-    return this.props.onDelete(commentId);
+    var commentIndex = this.props.index;
+    return this.props.onDelete(commentIndex);
   },
   render: function() {
     //var rawMarkup = converter.makeHtml(this.props.children.toString());

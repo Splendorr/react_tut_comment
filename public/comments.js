@@ -115,12 +115,14 @@ var CommentForm = React.createClass({
 
     this.refs.author.getDOMNode().value = '';
     this.refs.text.getDOMNode().value = '';
+    this.refs.author.getDOMNode().focus();
+
     return;
   },
   render: function() {
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author" />
+        <input type="text" placeholder="Your name" ref="author"/>
         <input type="text" placeholder="Say something..." ref="text" />
         <input type="submit" value="Post" />
       </form>
